@@ -1,3 +1,12 @@
+# CatBoost training artifacts                                                                                                                                                              
+catboost_info/                                                                                                                                                                             
+                       
+# Logs
+*.log
+
+# Claude Code personal settings
+.claude/
+
 # Data — tracked by DVC, not git
 data/raw/
 data/processed/

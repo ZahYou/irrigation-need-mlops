@@ -1,0 +1,58 @@
+{
+  "cat_baseline_v001": {
+    "oof_balanced_accuracy": 0.956611,
+    "macro_f1": 0.953377,
+    "weighted_f1": 0.978708,
+    "low_precision": 0.98509,
+    "low_recall": 0.990123,
+    "low_f1": 0.9876,
+    "medium_precision": 0.976837,
+    "medium_recall": 0.966798,
+    "medium_f1": 0.971792,
+    "high_precision": 0.888889,
+    "high_recall": 0.912913,
+    "high_f1": 0.900741
+  },
+  "lgbm_baseline_v001": {
+    "oof_balanced_accuracy": 0.948419,
+    "macro_f1": 0.959777,
+    "weighted_f1": 0.981678,
+    "low_precision": 0.983667,
+    "low_recall": 0.994891,
+    "low_f1": 0.989247,
+    "medium_precision": 0.981348,
+    "medium_recall": 0.970487,
+    "medium_f1": 0.975888,
+    "high_precision": 0.951299,
+    "high_recall": 0.87988,
+    "high_f1": 0.914197
+  },
+  "xgb_baseline_v001": {
+    "oof_balanced_accuracy": 0.951818,
+    "macro_f1": 0.956132,
+    "weighted_f1": 0.980321,
+    "low_precision": 0.982834,
+    "low_recall": 0.99455,
+    "low_f1": 0.988658,
+    "medium_precision": 0.982052,
+    "medium_recall": 0.966008,
+    "medium_f1": 0.973964,
+    "high_precision": 0.916923,
+    "high_recall": 0.894895,
+    "high_f1": 0.905775
+  },
+  "ensemble": {
+    "oof_balanced_accuracy": 0.953481,
+    "macro_f1": 0.961085,
+    "weighted_f1": 0.982311,
+    "low_precision": 0.984333,
+    "low_recall": 0.995061,
+    "low_f1": 0.989668,
+    "medium_precision": 0.98292,
+    "medium_recall": 0.970487,
+    "medium_f1": 0.976664,
+    "high_precision": 0.940063,
+    "high_recall": 0.894895,
+    "high_f1": 0.916923
+  }
+}

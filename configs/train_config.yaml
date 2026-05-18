@@ -1,17 +1,28 @@
-# Training configuration — populated fully in Week 2.
-# Model type and all hyperparameters live here so nothing is hardcoded in src/.
-
-model:
-  type: lightgbm          # options: lightgbm | xgboost | catboost
+dev_mode: true   # set to false (and dev_sample: null) for a full production run
 
 data:
-  raw_path: data/raw/train.csv
-  processed_path: data/processed/train_clean.csv
-  target_column: target
-  test_size: 0.2
-  random_seed: 42
+  raw_train: data/raw/train.csv
+  raw_test: data/raw/test.csv
+  target_column: Irrigation_Need
+  label_map:
+    Low: 0
+    Medium: 1
+    High: 2
+  processed_dir: data/processed
+  dev_sample: 10000      # stratified rows to keep from train; null = full data
+  dev_test_sample: 5000  # rows to keep from test; null = full data
 
-# Hyperparameters — override per model type in Week 2
+training:
+  seed: 42
+  n_splits: 3   # 5 for full run
+  # Comment out any model to skip it. Order controls execution order.
+  models:
+    - xgb
+    - lgbm
+    - catboost
+
+# ── Model hyperparameters (used by baseline_runner; expand in Week 2) ───────
+
 lightgbm:
   n_estimators: 1000
   learning_rate: 0.05
@@ -19,8 +30,6 @@ lightgbm:
   min_child_samples: 20
   subsample: 0.8
   colsample_bytree: 0.8
-  reg_alpha: 0.1
-  reg_lambda: 0.1
 
 xgboost:
   n_estimators: 1000
@@ -28,15 +37,14 @@ xgboost:
   max_depth: 6
   subsample: 0.8
   colsample_bytree: 0.8
-  reg_alpha: 0.1
-  reg_lambda: 1.0
+  min_child_weight: 20
 
 catboost:
   iterations: 1000
   learning_rate: 0.05
   depth: 6
-  l2_leaf_reg: 3.0
+  l2_leaf_reg: 3
 
 mlflow:
-  experiment_name: tabular-classification
+  experiment_name: irrigation-need
   tracking_uri: mlruns

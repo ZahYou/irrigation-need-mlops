@@ -1,16 +1,44 @@
 stages:
-  preprocess:
-    cmd: python -m src.data.preprocess
+  features:
+    cmd: python -m src.data.run_features
     deps:
-      - src/data/preprocess.py
+      - src/data/run_features.py
+      - src/data/feature_engineering.py
       - data/raw/train.csv
+      - data/raw/test.csv
+      - configs/train_config.yaml
     outs:
-      - data/processed/train_clean.csv
+      - data/processed/X_train.pkl
+      - data/processed/X_test.pkl
+      - data/processed/y_train.pkl
+      - data/processed/cat_cols.json
+      - data/processed/num_cols.json
+      - data/processed/feature_artifacts.pkl
 
-  featurize:
-    cmd: python -m src.data.features
+  train:
+    cmd: python -m src.models.baseline_runner
     deps:
-      - src/data/features.py
-      - data/processed/train_clean.csv
+      - src/models/baseline_runner.py
+      - data/processed/X_train.pkl
+      - data/processed/X_test.pkl
+      - data/processed/y_train.pkl
+      - data/processed/cat_cols.json
+      - data/processed/num_cols.json
+      - data/raw/test.csv
+      - configs/train_config.yaml
     outs:
-      - data/processed/train_features.csv
+      - saved_oof
+      - submissions
+      - feature_importance
+      - saved_models:
+          cache: false   # model pickles can be large; skip DVC cache
+
+  evaluate:
+    cmd: python -m src.models.evaluate
+    deps:
+      - src/models/evaluate.py
+      - saved_oof
+      - data/processed/y_train.pkl
+    metrics:
+      - reports/metrics.json:
+          cache: false   # plain JSON stored in git, not DVC cache — enables dvc metrics diff
