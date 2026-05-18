@@ -1,0 +1,8 @@
+# Normalize line endings to LF in the repo; git converts on checkout for Windows
+* text=auto eol=lf
+*.py text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+Dockerfile text eol=lf

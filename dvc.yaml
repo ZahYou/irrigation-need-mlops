@@ -1,0 +1,16 @@
+stages:
+  preprocess:
+    cmd: python -m src.data.preprocess
+    deps:
+      - src/data/preprocess.py
+      - data/raw/train.csv
+    outs:
+      - data/processed/train_clean.csv
+
+  featurize:
+    cmd: python -m src.data.features
+    deps:
+      - src/data/features.py
+      - data/processed/train_clean.csv
+    outs:
+      - data/processed/train_features.csv

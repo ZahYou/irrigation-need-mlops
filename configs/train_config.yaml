@@ -1,0 +1,42 @@
+# Training configuration — populated fully in Week 2.
+# Model type and all hyperparameters live here so nothing is hardcoded in src/.
+
+model:
+  type: lightgbm          # options: lightgbm | xgboost | catboost
+
+data:
+  raw_path: data/raw/train.csv
+  processed_path: data/processed/train_clean.csv
+  target_column: target
+  test_size: 0.2
+  random_seed: 42
+
+# Hyperparameters — override per model type in Week 2
+lightgbm:
+  n_estimators: 1000
+  learning_rate: 0.05
+  num_leaves: 63
+  min_child_samples: 20
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.1
+  reg_lambda: 0.1
+
+xgboost:
+  n_estimators: 1000
+  learning_rate: 0.05
+  max_depth: 6
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.1
+  reg_lambda: 1.0
+
+catboost:
+  iterations: 1000
+  learning_rate: 0.05
+  depth: 6
+  l2_leaf_reg: 3.0
+
+mlflow:
+  experiment_name: tabular-classification
+  tracking_uri: mlruns
