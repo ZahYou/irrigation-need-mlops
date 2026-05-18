@@ -7,6 +7,12 @@ catboost_info/
 # Claude Code personal settings
 .claude/
 
+# Local notes (not for GitHub)                                                                                                                                                             
+Plan.txt             
+chat.md
+Week*.txt
+week*-what-we-did-and-why.md
+
 # Data — tracked by DVC, not git
 data/raw/
 data/processed/
