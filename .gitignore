@@ -49,3 +49,6 @@ notebooks/.ipynb_checkpoints/
 # DVC cache (local)
 .dvc/cache/
 .dvc/tmp/
+/saved_oof
+/submissions
+/feature_importance
