@@ -91,7 +91,7 @@ stages:
       nfiles: 3
     - path: saved_models
       hash: md5
-      md5: d9d29528e29afc74158f25191b766a1f.dir
+      md5: de6cba77cf86080818a140bb27f2bd9d.dir
       size: 31361324
       nfiles: 10
     - path: saved_oof

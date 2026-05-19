@@ -73,7 +73,8 @@ class EDA:
         ]
         for data, label in zip(
             [self.train, self.test, self.orig],
-            ['Train', 'Test', 'Orig']
+            ['Train', 'Test', 'Orig'],
+            strict=True,
         ):
             print(Style.BRIGHT + Fore.GREEN + f'\n{label} head\n')
             display(data.head().style.set_table_styles(table_style))
@@ -103,7 +104,8 @@ class EDA:
             axes,
             [self.train, self.orig],
             ['Train (synthetic)', 'Orig (real)'],
-            ['Greens', 'Blues']
+            ['Greens', 'Blues'],
+            strict=True,
         ):
             corr = data[self.num_features + [self.target]].corr(method='pearson')
             sns.heatmap(corr, fmt='0.2f', cmap=cmap, square=True,
@@ -251,7 +253,8 @@ class EDA:
         for ax, data, label in zip(
             axes,
             [self.train, self.orig],
-            ['Train (synthetic)', 'Orig (real)']
+            ['Train (synthetic)', 'Orig (real)'],
+            strict=True,
         ):
             vc = data[self.target].value_counts()
             ax.pie(vc, labels=vc.index, autopct='%1.2f%%',
@@ -276,7 +279,8 @@ class EDA:
         for data, label, color in zip(
             [self.train, self.orig],
             ['Train', 'Orig'],
-            [self.COLORS['Train'], self.COLORS['Orig']]
+            [self.COLORS['Train'], self.COLORS['Orig']],
+            strict=True,
         ):
             sns.kdeplot(data=data[self.target], color=color,
                         ax=ax, linewidth=2, label=label)

@@ -320,7 +320,7 @@ CONFIGS = [_ALL_CONFIGS[m] for m in _ENABLED if m in _ALL_CONFIGS]
 # ─────────────────────────────────────────────────────────────
 all_models = {}
 
-for model_key, (name, model_fn, X_tr, X_te, use_cat) in zip(_ENABLED, CONFIGS):
+for model_key, (name, model_fn, X_tr, X_te, use_cat) in zip(_ENABLED, CONFIGS, strict=True):
     print(f"\n{'='*55}\n  {name}\n{'='*55}")
 
     with mlflow.start_run(run_name=name):
