@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import StratifiedKFold
 
-
 TARGET = "Irrigation_Need"
 ID_COL = "id"
 EPS = 1e-6

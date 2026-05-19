@@ -1,7 +1,6 @@
 """Tests for src/data/preprocess.py — expanded in Week 1 Day 2-3 with real data."""
 
 import pandas as pd
-import pytest
 
 from src.data.preprocess import clean
 

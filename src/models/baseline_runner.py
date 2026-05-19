@@ -1,21 +1,21 @@
+import json
 import os
 import pickle
+
+import lightgbm as lgb
+import matplotlib.pyplot as plt
+import mlflow
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import xgboost as xgb
-import lightgbm as lgb
+import yaml
 from catboost import CatBoostClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.pipeline import Pipeline
-from sklearn.utils.class_weight import compute_sample_weight
 from sklearn.metrics import balanced_accuracy_score
 from sklearn.model_selection import StratifiedKFold
-
-import json
-import yaml
-import mlflow
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.utils.class_weight import compute_sample_weight
 
 # ─────────────────────────────────────────────────────────────
 # CONFIG
@@ -359,7 +359,7 @@ for model_key, (name, model_fn, X_tr, X_te, use_cat) in zip(_ENABLED, CONFIGS, s
 # SUMMARY
 # ─────────────────────────────────────────────────────────────
 print(f"\n{'='*55}")
-print(f"  BASELINE SUMMARY")
+print("  BASELINE SUMMARY")
 print(f"{'='*55}")
 for name, result in all_models.items():
     print(f"  {name:40s}  BA: {result['score']:.6f}")

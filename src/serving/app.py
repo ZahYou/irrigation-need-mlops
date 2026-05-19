@@ -3,7 +3,6 @@
 import pickle
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -70,25 +69,25 @@ app = FastAPI(
 
 
 class PredictRequest(BaseModel):
-    Soil_pH: Optional[float] = None
-    Soil_Moisture: Optional[float] = None
-    Organic_Carbon: Optional[float] = None
-    Electrical_Conductivity: Optional[float] = None
-    Temperature_C: Optional[float] = None
-    Humidity: Optional[float] = None
-    Rainfall_mm: Optional[float] = None
-    Sunlight_Hours: Optional[float] = None
-    Wind_Speed_kmh: Optional[float] = None
-    Field_Area_hectare: Optional[float] = None
-    Previous_Irrigation_mm: Optional[float] = None
-    Soil_Type: Optional[str] = None
-    Crop_Type: Optional[str] = None
-    Crop_Growth_Stage: Optional[str] = None
-    Season: Optional[str] = None
-    Irrigation_Type: Optional[str] = None
-    Water_Source: Optional[str] = None
-    Mulching_Used: Optional[str] = None
-    Region: Optional[str] = None
+    Soil_pH: float | None = None
+    Soil_Moisture: float | None = None
+    Organic_Carbon: float | None = None
+    Electrical_Conductivity: float | None = None
+    Temperature_C: float | None = None
+    Humidity: float | None = None
+    Rainfall_mm: float | None = None
+    Sunlight_Hours: float | None = None
+    Wind_Speed_kmh: float | None = None
+    Field_Area_hectare: float | None = None
+    Previous_Irrigation_mm: float | None = None
+    Soil_Type: str | None = None
+    Crop_Type: str | None = None
+    Crop_Growth_Stage: str | None = None
+    Season: str | None = None
+    Irrigation_Type: str | None = None
+    Water_Source: str | None = None
+    Mulching_Used: str | None = None
+    Region: str | None = None
 
 
 class PredictResponse(BaseModel):

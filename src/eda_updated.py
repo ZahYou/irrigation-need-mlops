@@ -1,9 +1,10 @@
-import pandas as pd
-import numpy as np
+from pathlib import Path
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import seaborn as sns
 from colorama import Fore, Style, init
-from pathlib import Path
 from IPython.display import display
 
 init(autoreset=True)

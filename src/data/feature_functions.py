@@ -4,8 +4,8 @@ try:
     GPU = True
     print("cuDF/cuPy loaded — running on GPU")
 except ImportError:
-    import pandas as pd
     import numpy as np
+    import pandas as pd
     GPU = False
     print("cuDF not available — running on CPU")
 

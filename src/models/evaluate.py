@@ -32,6 +32,7 @@ import logging
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")  # non-interactive backend — safe in CI and headless servers
 import matplotlib.pyplot as plt
 import numpy as np
