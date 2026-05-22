@@ -1,5 +1,4 @@
 """Custom MLflow pyfunc model wrapping the full irrigation ensemble.
-
 Packages feature engineering + label encoding + all fold models + probability
 averaging into ONE registry artifact, so serving can load the whole prediction
 pipeline by alias: models:/irrigation-need-classifier@champion
@@ -30,7 +29,9 @@ class IrrigationEnsemble(mlflow.pyfunc.PythonModel):
 
     def load_context(self, context):
         """Runs ONCE when MLflow loads the model. Restores everything from artifacts."""
-        artifacts = context.artifacts
+        # MLflow logged on Windows stores artifact sub-paths with backslashes; normalize
+        # to forward slashes so the model also loads on Linux (e.g. inside the container).
+        artifacts = {k: str(v).replace("\\", "/") for k, v in context.artifacts.items()}
 
         # Feature-engineering lookup tables (built during the features stage)
         with open(artifacts["feature_artifacts"], "rb") as f:
