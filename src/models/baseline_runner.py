@@ -5,11 +5,16 @@ import pickle
 import lightgbm as lgb
 import matplotlib.pyplot as plt
 import mlflow
+import mlflow.catboost
+import mlflow.lightgbm
+import mlflow.sklearn
+import mlflow.xgboost
 import numpy as np
 import pandas as pd
 import xgboost as xgb
 import yaml
 from catboost import CatBoostClassifier
+from mlflow.models.signature import infer_signature
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import balanced_accuracy_score
 from sklearn.model_selection import StratifiedKFold
@@ -99,7 +104,6 @@ def run_cv(model_fn, name, X_tr_full, X_te_full, use_cat=False):
     proba_path = f"saved_oof/{name}_proba.npy"
     class_path = f"saved_oof/{name}_class.npy"
     test_path  = f"saved_oof/{name}_test.npy"
-
     if os.path.exists(proba_path):
         print(f"  [skip] {name} already done — loading")
         oof_proba  = np.load(proba_path)
@@ -147,7 +151,18 @@ def run_cv(model_fn, name, X_tr_full, X_te_full, use_cat=False):
         test_preds.append(te_proba)
         fold_models.append(model)
 
+        # Log model to MLflow with framework-aware flavor + signature
+        signature = infer_signature(X_val.head(5), val_proba[:5])
+        if isinstance(model, CatBoostClassifier):
+            mlflow.catboost.log_model(model, name=f"model_fold{fold+1}", signature=signature)
+        elif isinstance(model, xgb.XGBClassifier):
+            mlflow.xgboost.log_model(model, name=f"model_fold{fold+1}", signature=signature)
+        elif isinstance(model, lgb.LGBMClassifier):
+            mlflow.lightgbm.log_model(model, name=f"model_fold{fold+1}", signature=signature)
+        else:
+            mlflow.sklearn.log_model(model, name=f"model_fold{fold+1}", signature=signature)
         fold_score = balanced_accuracy_score(y_val, np.argmax(val_proba, axis=1))
+
         print(f"Done — BA: {fold_score:.6f}")
         mlflow.log_metric("fold_ba", fold_score, step=fold)
 
