@@ -47,4 +47,4 @@ catboost:
 
 mlflow:
   experiment_name: irrigation-need
-  tracking_uri: mlruns
+  tracking_uri: sqlite:///mlflow.db
