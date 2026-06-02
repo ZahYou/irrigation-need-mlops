@@ -1,0 +1,18 @@
+{
+  "model_name": "irrigation-need-classifier",
+  "holdout_rows": 500,
+  "champion": {
+    "balanced_accuracy": 0.9634650267507757,
+    "macro_f1": 0.9744571120799895,
+    "high_recall": 0.9411764705882353
+  },
+  "challenger": {
+    "balanced_accuracy": 0.9634650267507757,
+    "macro_f1": 0.9744571120799895,
+    "high_recall": 0.9411764705882353
+  },
+  "delta_balanced_accuracy": 0.0,
+  "agreement_rate": 1.0,
+  "promote_margin": 0.001,
+  "decision": "HOLD champion"
+}
