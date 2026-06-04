@@ -1,9 +1,35 @@
 services:
+  # --- the model API (built from the project Dockerfile) ---
   api:
     build: .
     ports:
       - "8000:8000"
-    volumes:
-      - ./models:/app/models:ro
     environment:
-      - MODEL_PATH=/app/models/model.onnx
+      # the MLflow tracking server runs on the HOST, not in compose
+      - MLFLOW_TRACKING_URI=http://host.docker.internal:5000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # --- Prometheus: scrapes api:8000/metrics, stores the time series ---
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - api
+
+  # --- Grafana: dashboards over Prometheus ---
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus

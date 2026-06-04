@@ -11,13 +11,17 @@ from contextlib import asynccontextmanager
 import mlflow
 import pandas as pd
 from fastapi import FastAPI, HTTPException
+from prometheus_client import Counter
+from prometheus_fastapi_instrumentator import Instrumentator
 from pydantic import BaseModel
 
 MODEL_URI = os.getenv("MODEL_URI", "models:/irrigation-need-classifier@champion")
 MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "sqlite:///mlflow.db")
 
 _state: dict = {}
-
+PREDICTIONS = Counter("predictions_total",
+                    "Count of predictions by predicted class",
+                    ["predicted_class"])
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -34,6 +38,8 @@ app = FastAPI(
     version="0.2.0",
     lifespan=lifespan,
 )
+
+Instrumentator().instrument(app).expose(app)
 
 
 class PredictRequest(BaseModel):
@@ -81,6 +87,8 @@ def predict(req: PredictRequest) -> PredictResponse:
         raise HTTPException(status_code=422, detail=f"Prediction failed: {exc}") from exc
 
     row = result.iloc[0]
+    pred_class = str(row["predicted_class"])
+    PREDICTIONS.labels(predicted_class=pred_class).inc()
     return PredictResponse(
         predicted_class=str(row["predicted_class"]),
         probabilities={

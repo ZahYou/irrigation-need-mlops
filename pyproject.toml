@@ -22,6 +22,7 @@ dependencies = [
     "fastapi>=0.111",
     "uvicorn[standard]>=0.29",
     "pydantic>=2.7",
+    "prometheus-fastapi-instrumentator>=7.0",
     # ONNX
     "onnx>=1.16",
     "onnxruntime>=1.18",

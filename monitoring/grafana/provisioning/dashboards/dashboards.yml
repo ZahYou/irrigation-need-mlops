@@ -1,0 +1,13 @@
+apiVersion: 1
+
+# Tells Grafana to load any dashboard JSON found under the mounted path
+# on startup. This is the "dashboards as code" pattern.
+providers:
+  - name: "irrigation"
+    orgId: 1
+    type: file
+    disableDeletion: false
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: false
