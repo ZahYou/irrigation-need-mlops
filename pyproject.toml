@@ -38,6 +38,9 @@ dev = [
     "pytest-cov>=5.0",
     "httpx>=0.27",   # for FastAPI test client
 ]
+monitoring = [
+      "evidently>=0.4",
+]
 
 [tool.setuptools.packages.find]
 where = ["."]
@@ -54,3 +57,4 @@ ignore = ["E501"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-v --tb=short"
+

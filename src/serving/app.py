@@ -5,8 +5,12 @@ from the MLflow Model Registry by alias. Swap models by reassigning @champion â€
 no code change, no logic redeploy.
 """
 
+import csv
 import os
+import threading
 from contextlib import asynccontextmanager
+from datetime import UTC, datetime
+from pathlib import Path
 
 import mlflow
 import pandas as pd
@@ -19,6 +23,32 @@ MODEL_URI = os.getenv("MODEL_URI", "models:/irrigation-need-classifier@champion"
 MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "sqlite:///mlflow.db")
 
 _state: dict = {}
+LOG_PATH = Path(os.getenv("PREDICTION_LOG", "logs/predictions.csv"))
+_log_lock = threading.Lock()
+
+def _log_prediction(features: dict, predicted_class: str, probs: dict[str, float]) -> None:
+    """Append one request + prediction to the CSV log (thread-safe, best-effort)."""
+    row = {
+          "timestamp": datetime.now(UTC).isoformat(),
+          **features,
+          "predicted_class": predicted_class,
+          **probs,
+      }
+
+    try :
+        with _log_lock:
+            LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+            write_header = not LOG_PATH.exists()
+            with LOG_PATH.open("a", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=list(row.keys()))
+                if write_header:
+                    writer.writeheader()
+                writer.writerow(row)
+
+    except Exception as exc:
+        print(f"[warn] prediction logging failed: {exc}")
+
+
 PREDICTIONS = Counter("predictions_total",
                     "Count of predictions by predicted class",
                     ["predicted_class"])
@@ -89,11 +119,17 @@ def predict(req: PredictRequest) -> PredictResponse:
     row = result.iloc[0]
     pred_class = str(row["predicted_class"])
     PREDICTIONS.labels(predicted_class=pred_class).inc()
-    return PredictResponse(
-        predicted_class=str(row["predicted_class"]),
-        probabilities={
+
+    probs={
             "Low": round(float(row["Low"]), 6),
             "Medium": round(float(row["Medium"]), 6),
             "High": round(float(row["High"]), 6),
-        },
+        }
+    
+    _log_prediction(req.model_dump(), pred_class, probs)
+
+    return PredictResponse(
+        predicted_class=pred_class,
+        probabilities=probs,
     )
+
