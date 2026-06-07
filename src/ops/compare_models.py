@@ -18,7 +18,7 @@ from sklearn.model_selection import train_test_split
 MODEL_NAME = "irrigation-need-classifier"
 TARGET = "Irrigation_Need"
 #HOLDOUT_FRAC = 0.2
-HOLDOUT_N = 500  # fixed-size holdout, for more stable comparisons across runs
+HOLDOUT_N = int(os.getenv("HOLDOUT_N", "500"))  # env override for fast smoke runs
                     # model predicts per-row (FE pipeline is per-request);
                     # batch eval scales linearly. 500 is plenty for the gate.
 SEED = 42
