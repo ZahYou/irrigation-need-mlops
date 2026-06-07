@@ -25,7 +25,7 @@ Run:  python -m src.ops.drift_loop
 import json
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 # --- drift_report.py's exit-code contract (defined in that file) ---
@@ -62,7 +62,7 @@ def _write_summary(summary: dict) -> None:
 
 
 def main() -> int:
-    summary = {"timestamp": datetime.now(timezone.utc).isoformat()}
+    summary = {"timestamp": datetime.now(UTC).isoformat()}
 
     # --- Step 1: drift check -------------------------------------------------
     drift_code = _run_step("DRIFT CHECK", "src.ops.drift_report")

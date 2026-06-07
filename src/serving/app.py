@@ -125,7 +125,7 @@ def predict(req: PredictRequest) -> PredictResponse:
             "Medium": round(float(row["Medium"]), 6),
             "High": round(float(row["High"]), 6),
         }
-    
+
     _log_prediction(req.model_dump(), pred_class, probs)
 
     return PredictResponse(
